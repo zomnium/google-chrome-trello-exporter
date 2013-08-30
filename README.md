@@ -10,7 +10,7 @@ All processing is done within your Chrome browser, no information will be send t
 How to use
 -------
 
-After installing the extension, go to Trello, login and follow these steps:
+After [installing the extension](https://chrome.google.com/webstore/detail/trello-csv-converter/aailfmcmlniknbllmbbkipnfphiejmja), go to Trello, login and follow these steps:
 
 1. Open a board or card
 2. Click on 'Export JSON', hidden under 'More...'
