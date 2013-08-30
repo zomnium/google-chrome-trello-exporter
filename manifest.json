@@ -1,0 +1,15 @@
+{
+  "name": "Trello CSV Converter",
+  "description": "Export Trello content to CSV documents.",
+  "version": "0.1",
+  "manifest_version": 2,
+  "permissions": [
+    "contextMenus",
+    "tabs",
+    "http://trello.com/*",
+    "https://trello.com/*"
+  ],
+  "background": {
+    "scripts": ["background.js"]
+  }
+}
