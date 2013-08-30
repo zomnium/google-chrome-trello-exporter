@@ -1,6 +1,9 @@
 
 /*
  * Trello export
+ *
+ * author: Tim van Bergenhenegouwen, Zomnium
+ * website: zomnium.com
  */
 
 
