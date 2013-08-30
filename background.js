@@ -60,12 +60,13 @@ function processChecklists(data) {
 	data.forEach(function(checklist, index) {
 		csv += checklist.name + ",\n";
 
-		// Loop through checlist items
+		// Loop through checklist items
 		checklist.checkItems.forEach(function(item) {
 			csv += item.name + ",";
 			csv += item.state + "\n";
 		});
 
+		// Add a line of whitespace
 		csv += "\n";
 	});
 
