@@ -1,6 +1,6 @@
 
 /*
- * Trello export
+ * Exporter for Trello
  *
  * Author: Tim van Bergenhenegouwen, Zomnium
  * Website: zomnium.com
