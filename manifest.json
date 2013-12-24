@@ -1,7 +1,7 @@
 {
-  "name": "Trello CSV Converter",
-  "description": "Export Trello content to CSV documents.",
-  "version": "0.1",
+  "name": "Exporter for Trello",
+  "description": "Export your Trello content to CSV documents (unofficial).",
+  "version": "0.1.1",
   "manifest_version": 2,
   "permissions": [
     "contextMenus",
