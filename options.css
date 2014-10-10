@@ -1,0 +1,159 @@
+
+/**
+ * Border box
+ */
+
+*, *:before, *:after {
+    -webkit-box-sizing: border-box; 
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+/**
+ * Base
+ */
+
+body {
+	background: #45a6de;
+	color: #4d4d4d;
+	font-size: 100%;
+	font-family: "Helvetica Neue",Arial,sans-serif;
+	line-height: 1.8;
+	margin: 0;
+	padding: 3.6em 1.8em;
+}
+
+/**
+ * Typography
+ */
+
+h1, h2, h3, h4, h5, h6 {
+	font-weight: 100;
+}
+
+h1, h2 {
+	text-align: center;
+}
+
+h1 { font-size: 3em; }
+h2 { font-size: 2.1em; }
+
+p, label {
+	font-weight: 200;
+}
+
+/**
+ * Layout
+ */
+
+.app {
+	background-color: #fff;
+	border-radius: 0.3em;
+	box-shadow: 0 0 1em #005180;
+	margin: 0 auto;
+	max-width: 42em;
+	padding: 1.8em;
+}
+
+.app__header {
+	padding-bottom: 1.2em;
+	text-align: center;
+}
+
+.app__content {
+	border-top: 0.1em solid #eee;
+	padding: 1.5em 0;
+}
+
+.app__footer {
+	padding: 1.2em 0 0;
+	text-align: center;
+}
+
+/**
+ * Buttons
+ */
+
+.button {
+	background-color: #45a6de;
+	border-radius: 0.3em;
+	box-shadow: 0 0.21em 0 #005180;
+	color: #fff;
+	display: block;
+	font-weight: 200;
+	margin-top: 3.6em;
+	padding: 1em;
+	text-align: center;
+	text-decoration: none;
+	transition: all .21s ease-in;
+}
+
+.button:hover {
+	box-shadow: 0 0.33em 0 #005180;
+}
+
+.button.-saved {
+	background-color: #005180;
+	box-shadow: 0 0 0;
+}
+
+/**
+ * Form
+ */
+
+button,
+input,
+select,
+textarea {
+	font-family: inherit;
+	font-size: 100%;
+	margin: 0;
+	outline: none;
+	vertical-align: baseline;
+}
+
+label,
+input {
+	font-weight: 200;
+	padding: 1em 0;
+}
+
+label {
+	float: left;
+	width: 30%;
+}
+
+input {
+	border: none;
+	border-bottom: 0.1em solid #eee;
+	display: block;
+	float: right;
+	width: 60%;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="url"]:focus,
+input[type="password"]:focus,
+input[type="search"]:focus,
+textarea:focus {
+	border-color: #45a6de;
+}
+
+/**
+ * Field Clearfix
+ */
+
+.field:before,
+.field:after {
+    content: " ";
+    display: table;
+}
+
+.field:after {
+    clear: both;
+}
+
+.field {
+    *zoom: 1;
+}
