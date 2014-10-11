@@ -85,16 +85,19 @@ p, label {
 	padding: 1em;
 	text-align: center;
 	text-decoration: none;
-	transition: all .21s ease-in;
+	transform: translate(0, 0.12em);
+	transition: all .3s ease-in;
 }
 
 .button:hover {
 	box-shadow: 0 0.33em 0 #005180;
+	transform: translate(0, 0em);
 }
 
 .button.-saved {
 	background-color: #005180;
 	box-shadow: 0 0 0;
+	transform: translate(0, 0.33em);
 }
 
 /**

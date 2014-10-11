@@ -87,7 +87,7 @@
         setTimeout(function(){
             saveButton.innerHTML = 'Save';
             saveButton.classList.remove('-saved');
-        }, 1000);
+        }, 1800);
     }
 
     /**
