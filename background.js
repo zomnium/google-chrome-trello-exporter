@@ -1,92 +1,133 @@
 
 /*
  * Exporter for Trello
+ * Download your Trello data in Excel or CSV format.
  *
- * Author: Tim van Bergenhenegouwen, Zomnium
+ * Author: Tim van Bergenhenegouwen, Zomnium.
  * Website: zomnium.com
  */
 
 (function (window, document) {
 
+    // Register Data Processor
+    var data = new dataProcessor();
+
+    /**
+     * Get Settings
+     * Returns Chrome Extension settings, or defaults when not set
+     */
+
+    function getSettings(callback)
+    {
+        // Get settings from Chrome storage
+        chrome.storage.sync.get({
+            checklist_status: 'status',
+            checklist_status_checked: 'done',
+            checklist_status_unchecked: 'in progress'
+        }, callback);
+    }
+
+    /**
+     * Generate File
+     */
+
+    function generateOutput(callback)
+    {
+        // Get the extension settings
+        getSettings(function (settings)
+        {
+            // Retreive and process Trello data
+            data.get(settings, function (data)
+            {
+                // Execute callback
+                callback(data);
+            });
+        });
+    }
+
     /**
      * Generate CSV
-     * Generator, called by context menu
+     * Exports data to a CSV file, called by context menu
      */
 
     function generateCSV(info, tab)
     {
         // Debug: print input
-        console.log("item " + info.menuItemId + " was clicked");
-        console.log("info: " + JSON.stringify(info));
-        console.log("tab: " + JSON.stringify(tab));
+        // console.log("item " + info.menuItemId + " was clicked");
+        // console.log("info: " + JSON.stringify(info));
+        // console.log("tab: " + JSON.stringify(tab));
 
-        // Get JSON and process returned data
-        getJSON({ 'url': info.linkUrl }, processChecklists);
+        // Generate file data
+        generateOutput(function (data)
+        {
+            // Register file creator
+            var csv = new csvExporter();
+
+            // Create download
+            csv.download(data);
+        });
     }
 
     /**
-     * Get JSON
-     * Gets the JSON file
+     * Generate Excel
+     * Exports data to an Excel file, called by context menu
      */
 
-    function getJSON(options, callback)
+    function generateExcel(info, tab)
     {
-        // Create HTTP request
-        var xhttp = new XMLHttpRequest();
+        // Debug: print input
+        // console.log("item " + info.menuItemId + " was clicked");
+        // console.log("info: " + JSON.stringify(info));
+        // console.log("tab: " + JSON.stringify(tab));
 
-        // Set values
-        options.url = options.url || null;
-        options.data = options.data || null;
-        options.type = options.type || 'json';
-        callback = callback || function () {};
+        // Generate file data
+        generateOutput(function (data)
+        {
+            // Register file creator
+            var excel = new excelExporter();
 
-        // Debug: print options
-        console.log("getJSON options: " + JSON.stringify(options));
-
-        // Make request
-        xhttp.open('GET', options.url, true);
-        xhttp.send(null);
-        xhttp.onreadystatechange = function() {
-            if (xhttp.status == 200 && xhttp.readyState == 4)
-            {
-                // Successful request, trigger callback
-                callback(xhttp.responseText);
-            }
-        }
-    }
-
-    /**
-     * Process Checklists
-     * Process checklist data from JSON to CSV
-     */
-
-    function processChecklists(data)
-    {
-        // Parse string to JSON and get checklists
-        data = JSON.parse(data);
-        data = data.checklists;
-
-        // Set data type, charset and give fill in field titles
-        var csv = "data:text/csv;charset=utf-8,\n";
-        csv += "name,status\n\n";
-
-        // Loop through checklists
-        data.forEach(function(checklist, index) {
-            csv += checklist.name + ",\n";
-
-            // Loop through checklist items
-            checklist.checkItems.forEach(function(item) {
-                csv += item.name + ",";
-                csv += item.state + "\n";
-            });
-
-            // Add a line of whitespace
-            csv += "\n";
+            // Create download
+            excel.download(data);
         });
 
-        // Encode and push result into a new window (functions as download)
-        var file = encodeURI(csv);
-        window.open(file);
+        getJSON({ 'url': info.linkUrl }, function (data)
+        {
+            // Parse string to JSON and get checklists
+            data = JSON.parse(data);
+            data = data.checklists;
+
+            var output = new Array();
+            output.push(['name', 'status'], [null]);
+
+            // Loop through checklists
+            data.forEach(function (checklist, index) {
+                output.push([checklist.name, null]);
+
+                // Loop through checklist items
+                checklist.checkItems.forEach(function (item) {
+                    output.push([item.name, item.state]);
+                });
+
+                // Add a line of whitespace
+                output.push([null]);
+            });
+
+            /* original data */
+            // var data = [[1,2,3],[true, false, null, "sheetjs"],["foo","bar",new Date("2014-02-19T14:30Z"), "0.3"], ["baz", null, "qux"]],
+            console.log(output);
+            var data = output,
+                ws_name = "SheetJS",
+                wb = new Workbook(),
+                ws = sheet_from_array_of_arrays(data);
+             
+            /* add worksheet to workbook */
+            wb.SheetNames.push(ws_name);
+            wb.Sheets[ws_name] = ws;
+            var wbout = XLSX.write(wb, {bookType:'xlsx', bookSST:true, type: 'binary'});
+
+            // Create file
+            saveAs(new Blob([s2ab(wbout)],{type:"application/octet-stream"}), "test.xlsx");
+        });
     }
 
     /**
@@ -94,9 +135,8 @@
      * Create content menu item in Chrome
      */
 
-    var context = "link";
-    var title = "Generate CSV checklist";
-    var id = chrome.contextMenus.create({"title": title, "contexts":[context], "onclick": generateCSV});
-    console.log("'" + context + "' item:" + id);
+    var context = "link",
+        csvLink = chrome.contextMenus.create({"title": 'Generate CSV file', "contexts":[context], "onclick": generateCSV}),
+        excelLink = chrome.contextMenus.create({"title": 'Generate Excel file', "contexts":[context], "onclick": generateExcel});
 
 }(this, document));

@@ -15,6 +15,9 @@
     "scripts": [
       "vendor/FileSaver/FileSaver.min.js",
       "vendor/js-xlsx/dist/xlsx.core.min.js",
+      "dataProcessor.js",
+      "excelExporter.js",
+      "csvExporter.js",
       "background.js"
     ]
   }
